@@ -1,9 +1,0 @@
-.content__places {
-  margin-bottom: 102px;
-}
-
-@media screen and (max-width: 425px) {
-  .content__places {
-    margin-bottom: 64px;
-  }
-}

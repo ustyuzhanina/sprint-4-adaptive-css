@@ -1,9 +1,0 @@
-.content__cover {
-  margin-bottom: 82px;
-}
-
-@media screen and (max-width: 425px) {
-  .content__cover {
-    margin-bottom: 64px;
-  }
-}
