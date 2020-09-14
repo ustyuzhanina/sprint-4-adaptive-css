@@ -1,0 +1,13 @@
+.footer__list-element {
+  display: inline;
+  padding: 0;
+  margin: 0;
+}
+
+@media screen and (max-width: 375px) {
+
+  .footer__list-element {
+    display: block;
+  }
+
+}

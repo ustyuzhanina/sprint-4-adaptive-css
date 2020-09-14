@@ -1,0 +1,28 @@
+.comment__author {
+  margin: 24px 0 0;
+  font-weight: 900;
+  font-size: 14px;
+  line-height: 22px;
+  padding: 0;
+}
+
+@media screen and (max-width: 1280px) {
+
+  .comment__author {
+    margin-top: 12px;    
+  }
+
+}
+
+@media screen and (max-width: 768px) {
+
+  .comment__author {
+    order: 2;
+    align-self: center;
+    font-size: 14px;
+    line-height: 24px;
+    margin: 0;
+    padding: 0;    
+  }
+
+}
