@@ -1,0 +1,9 @@
+.content__video {
+  margin-bottom: 102px;
+}
+
+@media screen and (max-width: 425px) {
+  .content__video {
+    margin-bottom: 64px;
+  }
+}

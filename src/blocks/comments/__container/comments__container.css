@@ -1,0 +1,37 @@
+.comments__container {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 0;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+}
+
+@media screen and (max-width: 768px) {
+
+  .comments__container {
+    flex-direction: column;
+    justify-content: flex-start;
+    max-width: 382px;
+  }
+
+}
+
+@media screen and (max-width: 425px) {
+
+  .comments__container {
+    margin-top: 48px;
+  }
+
+}
+
+@media screen and (max-width: 320px) {
+
+  .comments__container {
+    margin-top: 40px;
+  }
+
+}

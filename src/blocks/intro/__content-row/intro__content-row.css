@@ -1,0 +1,15 @@
+.intro__content-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin: 0 auto 24px;
+  padding: 0;
+}
+
+@media screen and (max-width: 425px) {
+
+  .intro__content-row {
+    margin-bottom: 32px;
+  }
+
+}
