@@ -4,14 +4,17 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackMd5Hash = require('webpack-md5-hash');
 const webpack = require('webpack');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CssNano = require('cssnano');
 const isDev = process.env.NODE_ENV === 'development';
 // создаем переменную для development-сборки
 
 module.exports = {
-  entry: { main: './src/index.js' },
+  entry: { 
+    index: './src/index.js' 
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].[chunkhash].js'
+    filename: 'js/[name].[chunkhash].js'
   },
   module: {
     rules: [
@@ -22,88 +25,119 @@ module.exports = {
       },
       {
         test: /\.scss$/i,
-        include: [
-          path.resolve(__dirname, 'src')
-        ],
-        use: ['style-loader',
-        MiniCssExtractPlugin.loader,
-        'css-loader',
+        use: [
+          isDev
+            ? 'style-loader'
+            : {
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                publicPath: '../',
+              },
+            },
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 2,
+            },
+          },
         'postcss-loader',
         'sass-loader'
         ]
       },      
       {
         test: /\.css$/i,
-        use:  [
-          (isDev ? "style-loader" : MiniCssExtractPlugin.loader), 
+        use: [
+          isDev
+            ? 'style-loader'
+            : {
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                publicPath: '../',
+              },
+            },
           {
-            loader: 'css-loader', 
+            loader: 'css-loader',
             options: {
-              importLoaders: 2
-            }
+              importLoaders: 2,
+            },
           },
-          'postcss-loader']
+          'postcss-loader'],
       },
       {
         test: /\.(png|jpe?g|gif|ico|svg)$/i,
         use: [
-                {
-                  loader: "file-loader",
-                  options: {
-                    esModule: false,
-                    name: "./images/[name].[ext]"
-                  },
-                },
-                {
-                  loader: 'image-webpack-loader',
-                  options: {
-                    name: "./images/[name].[ext]",
-                    esModule: false,
-                    mozjpeg: {
-                      progressive: true,
-                      quality: 65
-                    },
-                    optipng: {
-                      enabled: false,
-                    },
-                    pngquant: {
-                      quality: [0.65, 0.90],
-                      speed: 4
-                    },
-                    gifsicle: {
-                      interlaced: false,
-                    },
-                  }
-                },
-        ]
+          {
+            loader: 'file-loader',
+            options: {
+              esModule: false,
+              name: 'images/[name].[ext]',
+            },
+          },
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              esModule: false,
+              mozjpeg: {
+                progressive: true,
+                quality: 65,
+              },
+              optipng: {
+                enabled: false,
+              },
+              pngquant: {
+                quality: [0.65, 0.90],
+                speed: 4,
+              },
+              gifsicle: {
+                interlaced: false,
+              },
+              webp: {
+                quality: 85,
+              },
+              svgo: {
+                enabled: true,
+              },
+            },
+          },
+        ],
       },
       {
-        test: /\.(eot|ttf|woff|woff2)$/,
-        loader: 'file-loader?name=./vendor/[name].[ext]'
-      }
+        test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'vendor/fonts/[name].[ext]',
+            },
+          },
+        ],
+      },
     ]
   },
-  plugins: [ 
+  plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css'
+      filename: 'css/[name].[contenthash].css',
     }),
     new OptimizeCssAssetsPlugin({
       assetNameRegExp: /\.css$/g,
-      cssProcessor: require('cssnano'),
+      cssProcessor: CssNano,
       cssProcessorPluginOptions: {
-              preset: ['default'],
+        preset: ['default'],
       },
-      canPrint: true
+      canPrint: true,
     }),
     new HtmlWebpackPlugin({
       // Означает, что:
       inject: false, // стили НЕ нужно прописывать внутри тегов
       template: './src/index.html', // откуда брать образец для сравнения с текущим видом проекта
-      filename: 'index.html' // имя выходного файла, то есть того, что окажется в папке dist после сборки
+      filename: 'index.html', // имя выходного файла, то есть того, что окажется в папке dist после сборки
+      chunks: [
+        'index',
+      ],
     }),
     new WebpackMd5Hash(),
     new webpack.DefinePlugin({
-      'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-  })
-  ]
+      NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+  }),
+  ],
 };
