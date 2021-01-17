@@ -69,6 +69,7 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
+              publicPath: '',
               esModule: false,
               name: 'images/[name].[ext]',
             },
@@ -76,6 +77,7 @@ module.exports = {
           {
             loader: 'image-webpack-loader',
             options: {
+              publicPath: '',
               esModule: false,
               mozjpeg: {
                 progressive: true,
@@ -134,6 +136,7 @@ module.exports = {
       chunks: [
         'index',
       ],
+      minify: true,
     }),
     new WebpackMd5Hash(),
     new webpack.DefinePlugin({
